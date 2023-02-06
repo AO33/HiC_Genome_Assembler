@@ -1,0 +1,103 @@
+### This is the configuration file for the hicAssembler algorithm
+### IMPORTANT Notes about running the algorithm and config file arguments specifications
+### 
+### 1) Part1 of the pipeline must be run before Part2 and Parts1-2 must be run before Part3, and Parts1-3 must be run before Part4.
+### 2) The algorithm can run each Part independentaly, or sequentially for any combination of Parts (As long as the required Parts were run beforehand).
+### 3) Some of the arguments in this file are used in multiple Parts of the algorithm. These will be specified in subsequent comments
+### 4) Any nuances about any particular argument will be explained in the argument descriptions sections
+### 5) Lines in this configuration file that begin with a ### will NOT be read by the program, nor will empty lines be read
+### 6) If an argument asks for a specific file, then a full file path must be provided to the file. Example /full/File/Path/To/Said/File/fileToUse
+### 7) If an argument asks for a specific directory, then a full file path to the directory must be specified, 
+###    AND the directory must exist before the algorithm is run. Also, the trailing slash of the directory must not be specified. Example /path/To/Directory/DirectoryToUse
+### 8) An argument is specified with the following notation (do NOT deviate from this)... Example. ArgumentToBeSpecified = valueOfArgument
+###    The argument is followed by a space then an equals sign then another space then the value of the argument
+### 9) Finally, for any argument that specifies a plot/graph to be saved, an extension of the file type is required
+###    .png is HIGHLY reccommended as a .pdf will drastically slow down the run time and be unopenable to any computer without a high amount of ram
+
+#########################################################
+### Agruments used in 2 or more parts of the pipeline ###
+
+### resolution = integer value of the resolution of the contact map generated from HiCPro (Used in Parts1,2,3)
+### saveFilesDirectory = The directory in which all the intermediate / helper files will be saved to. (Used in Parts1,2,3,4)
+### savePlotsDirectory = The directory in which all of the plots will be saved in. (Used in Parts1,2)
+### hicProBedFile = full file path to the output .bed file from HiCPro. (Used in Parts1,2)
+### hicProBiasFile = full file path to the output iced.matrix.biases file output by HiCPro. (Used in Parts1,2)
+### hicProMatrixFile = full file path to the iced.matrix file output by HiCPro. (Used in Parts1,2)
+### hicProScaffSizeFile = full file path to the scaffold size file that is used by HiCPro. (Used in Parts1,3)
+### chromosomeGroupFile = fileName you wish to save the chromosomeGroup file to. All the binIDs and scaffolds that have been assigned to any given chromosome. (Written out by Part1, and read in by Part2)
+### chromosomeOrderFile = fileName of the near complete scaffold ordering/orientation file for each chromosome. (Written out by Part2, and read in by Part3 or Part4 if Part3 hasn't been run)
+### finalOrderingsFile = fileName to save the final ordering/orientation of scaffolds/chromosomes to. (Written out by Part3, and read in by Part4)
+
+resolution =
+saveFilesDirectory =
+savePlotsDirectory =
+hicProBedFile =
+hicProBiasFile =
+hicProMatrixFile =
+hicProScaffSizeFile =
+chromosomeGroupFile =
+chromosomeOrderFile =
+finalOrderingsFile =
+
+#################################################
+### Part1 Specific Arguments and descriptions ###
+
+### dendrogramOrderFile = fileName you wish to save the dendrogram ordering to from the UPGMA clustering. Will be saved to saveFilesDirectory/dendrogramOrderFile
+### avgClusterPlot = fileName you wish to save the ContactMap Heat map plot to. Will be saved to saveFilesDirectory/avgClusterPlot. .png extension is reccomended
+### avgClusterPlot_outlined = fileName you wish to save the ContactMap Heat map with the chromosomes outlined. Will be saved to saveFilesDirectory/avgClusterPlot. .png extension is reccomended
+### binGroupFile = fileName you wish to save the clustering results to at the bin level. These are the resolution sized genomic loci produced by HiCPro.
+### assessmentFile = fileName you wish to save the clustering assessment file to (the results from the scaffold assignment to a chromosome). Will be saved to saveFilesDirectory/assessmentFile
+### minSize = 20 Default value. Minimum size a chromosome can be (resolution*minSize) as well as the number of consecutive non-start states from the HMM to denote a chromosome boundary
+### modularity = .05 Default value. Percentage of the remaining data (after the HMM step is terminated) to use in the modularity maximization step. .05 corresponds to 5% of the data
+### convergenceRounds = 8 Default value. Number of rounds the HMM is allowed to run to find convergence. Anything greater than 10 should NOT be used
+### louvainRounds = 20 Default value. Number of rounds of the Louvain algorithm will be randomly initiated to help avoid local optima. Don't set this too high or it will run for a lonngggg time. 20 is already a bit high
+
+dendrogramOrderFile =
+avgClusterPlot =
+avgClusterPlot_outlined =
+binGroupFile =
+assessmentFile =
+minSize = 20
+modularity = .05
+convergenceRounds = 8
+louvainRounds = 20
+
+#################################################
+### Part2 Specific Arguments and descriptions ###
+
+# chromosomePlotSuffix = The suffix you want to add to the end of the title... Default will be Chr_1-NumberOfChromosomes chromosomePlotSuffix. Should be a string value
+# chromosomePlotSuffix =  100Kb resolution (This is an example of this argument. Note the space at the very beggining to split up the Chr_number and the suffix
+# fullGenomePlot = file name of the Plot for the full ordered/oriented genome plot. .png extension is HIGHLY reccomended
+# fullGenomePlotTitle = Title you want for the full genome plot. Should be a string value. 
+# plotOrderFile = fileName of the file that writes our the order of the binIDs for the Full genome heatMap
+# nScaffolds = 6 default value. It is the number of scaffolds on any given chromosome to test all permutations for at the begginging of the algorithm. Maximum allowed is 8.
+# scanScaffolds = 5 default value. The number of scaffolds within a sliding window to test all permutations for at the last step of the algoritm. Maxmimum allowed is nScaffolds value
+# IMPORTANT NOTE - The nScaffolds and scanScaffolds arguments can dramatically alter the run time. nScaffolds=8,scanScaffolds=8 can result in a very long runtime if a chromosome is large (150Mb >)
+# It is recommended to use a scanScaffolds value less than nScaffolds value by at least 1 or 2
+
+chromosomePlotSuffix =
+fullGenomePlot =
+fullGenomePlotTitle =
+plotOrderFile =
+nScaffolds = 6
+scanScaffolds = 5
+
+#################################################
+### Part3 Specific Arguments and descriptions ###
+
+### lengthCutoff = 500000 default value. The number in basepairs how far left and right to look for read pairs/restriction cut sites for adjacent scaffolds. Too far and the metric becomes useless. 500Kb seems to be a good happy medium
+### restrictionSiteFile = full file path to the restriction enzyme cut site file used/produced by HicPro
+### validPairFile = full file path to the all valid pairs file produced by HiCPro
+
+lengthCutoff = 500000
+restrictionSiteFile =
+validPairFile =
+
+#################################################
+### Part4 Specific Arguments and descriptions ###
+
+### originalFastaFile = full file path to the original .fasta that was used to align the reads
+### assembledFastaFile = fileName of the newely assembled genome file (in fasta format)
+
+originalFastaFile =
+assembledFastaFile =
