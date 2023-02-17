@@ -1,4 +1,5 @@
 # HiC_Genome_Assembler
+Documentation is still in progres...
 Code repository for a HiC based genome assembly algorithm I wrote during my time in the Baumann lab 
 https://www.baumannlab.org/links.html<br>
 
