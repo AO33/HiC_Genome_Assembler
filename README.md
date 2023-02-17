@@ -14,19 +14,36 @@ https://www.baumannlab.org/links.html<br>
 - The second phase of the algorithm then attempts to order and orient scaffolds within the found chromosome groupings. Amongst all the different ordering and orientation possibilities, we define the best permutation as the maximum value of a function that weights contact values that are close in linear space more heavily than values that are further away. We employ several different algorithms in a sequential fasion in an attempt to find the optimal ordering.
 
 
+  ![high_levelOverview](https://user-images.githubusercontent.com/20343526/219607825-c99b6578-828b-4031-bc9a-7f730d115262.png)
+
+<br><br>
 ## Part1
 
-Clusters contact map rows together via average clustering, and identifies matrix cut indices via HMM and modularity maximazation steps
+- Clusters contact map rows together via average clustering, and identifies matrix cut indices via HMM and modularity maximazation steps. Initial grouping assessment is also performed
+
+  ![part1](https://user-images.githubusercontent.com/20343526/219609929-912dc433-4435-4617-b26d-567c340c7ccf.png)
+
+
 
 ## Part2
 
-Orders and orients scaffolds with respect to on another on any given chromsome
+- Orders and orients scaffolds with respect to on another on any given chromsome
+
+  ![part2](https://user-images.githubusercontent.com/20343526/219610194-72c2aef0-8cde-45f9-8ecb-a73cba6ef967.png)
+
 
 
 ## Part3
 
-Attempts to correct potentially ambigously oriented scaffolds because of a resolution size that is too large. This step is optional and requires a restriction enzyme cut site file (that is also used by HiC-Pro) along with the valid pairs file produced by HiC-Pro that details read pair mappings
+- Attempts to correct potentially ambigously oriented scaffolds because of a resolution size that is too large. This step is optional and requires a restriction enzyme cut site file (that is also used by HiC-Pro) along with the valid pairs file produced by HiC-Pro that details read pair mappings
+
+  ![part3](https://user-images.githubusercontent.com/20343526/219610278-6c374383-3f68-494b-816b-19f549fc4442.png)
+
+
 
 ## Part4
 
-Writes out the final assembled genome with new gaps introduced as a sequence of 100 "N" characters. Scaffolds that were unable to be grouped, are still written to this new version with their original sequence name intact.
+- Writes out the final assembled genome with new gaps introduced as a sequence of 100 "N" characters. Scaffolds that were unable to be grouped, are still written to this new version with their original sequence name intact.
+
+  ![part4](https://user-images.githubusercontent.com/20343526/219610312-04df94eb-9a08-455b-b2fc-96bcbcb6628f.png)
+
