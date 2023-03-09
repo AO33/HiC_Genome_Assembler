@@ -399,7 +399,13 @@ def writeScaffoldOrderingsToFile(sOrderings,outFile):
 		chromCount += 1
 		outFile.write("### Chromosome grouping "+str(chromCount)+" ###"+'\n')
 		for s in scaffGroup:
-			outFile.write(s[0]+'\t'+s[1]+'\n')
+			if (type(s) == type(RestrictionScaffold('','','','',''))):
+				outFile.write(s.name+'\t'+s.orientation+'\n')
+
+			elif type(s) == type([]):
+				outFile.write(s[0]+'\t'+s[1]+'\n')
+			else:
+				print("- WARNING invalid output type {}... Expecting list or Scaffold like class...".format(type(s)))
 			scaffsWritten += 1
 	###############
 	outFile.close()
@@ -421,3 +427,4 @@ def runPipeline(chromosomeOrderFile,scaffSizeFile,restrictionSiteFile,validPairF
 	finalChromGroups = giveFinalChromOrdering(trips,scaffGroups,scaffDict,validPairs,resolution=resolution,lengthCutoff=lengthCutoff)
 	writeScaffoldOrderingsToFile(finalChromGroups,finalOrderingFile)
 	print("Total run-time  for Part3 = "+str(time.time()-startTime))
+	print("- Part 3 (optional orientation of scaffolds smaller than resulution size) completed successfully")

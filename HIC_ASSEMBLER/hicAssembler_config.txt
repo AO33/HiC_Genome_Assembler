@@ -47,20 +47,35 @@ finalOrderingsFile =
 ### avgClusterPlot_outlined = fileName you wish to save the ContactMap Heat map with the chromosomes outlined. Will be saved to saveFilesDirectory/avgClusterPlot. .png extension is reccomended
 ### binGroupFile = fileName you wish to save the clustering results to at the bin level. These are the resolution sized genomic loci produced by HiCPro.
 ### assessmentFile = fileName you wish to save the clustering assessment file to (the results from the scaffold assignment to a chromosome). Will be saved to saveFilesDirectory/assessmentFile
-### minSize = 20 Default value. Minimum size a chromosome can be (resolution*minSize) as well as the number of consecutive non-start states from the HMM to denote a chromosome boundary
+### hyperGeom = True Default value. Strategy to use to parse the avg clustering results to assign bins to chromosome groups. 
+###             Uses a series of hyper geometric tests to aggressively cut the data. These "aggressive" cuts are then evaluated with another round of hyper geometric tests by comparing the groups found between them.
+###             Groups dictated by these cut sites that are found to have significant overlap with one anothers rank order matrix are merged by removing the orignal "aggressive" cut that split them. 
+###
+### hmm = False Default value. Strategy to use to parse the avg clustering results to assign bins to chromosome groups. 
+###       Uses a series of hmms on subesequently smaller and smaller versions of the matrix until the end of the data is reached. Break points are identified by detecting state switchs within the data
+###       whose size is dictated by the minSize argument. Once a breakpoint is found, the algorithm repeats using the breakpoint as its starting point for the next round, thus shrinking the data
+### minSize = 5 Default value. Minimum size a chromosome can be (resolution*minSize) outside of modularity calculations.
+###           This value is used by the hyperGeom function, which helps dictate how sensitive we want our orignal cut sites to be. Between 5-15 is recommended for the hic data
+###           This value is also used by the hmm option, in which case minSize dictates how many consecutive non-start states from the HMM to denote a chromosome boundary. (left most is taken if multiple are found)
 ### modularity = .05 Default value. Percentage of the remaining data (after the HMM step is terminated) to use in the modularity maximization step. .05 corresponds to 5% of the data
-### convergenceRounds = 8 Default value. Number of rounds the HMM is allowed to run to find convergence. Anything greater than 10 should NOT be used
+### psig = .05 Default value. Specific to hyperGeom option. Significance indicator for hyper geometric tests that attempt to cut the avg clustering dendrogram to chromosome groups
+### convergenceRounds = 5 Default value. Specific to hmm option. Number of rounds the HMM is allowed to run to find convergence. Anything greater than 10 should NOT be used
+### lookAhead = .2 Default value. Specifies fraction of orignal matrix size to use when looking forward to gather data for hmm change point detection. between 0-100 or False
 ### louvainRounds = 20 Default value. Number of rounds of the Louvain algorithm will be randomly initiated to help avoid local optima. Don't set this too high or it will run for a lonngggg time. 20 is already a bit high
 
+hyperGeom = True
+hmm = False
+minSize = 5
+modularity = .05
+psig = .05
+convergenceRounds = 5
+lookAhead = .2
+louvainRounds = 20
 dendrogramOrderFile =
 avgClusterPlot =
 avgClusterPlot_outlined =
 binGroupFile =
 assessmentFile =
-minSize = 20
-modularity = .05
-convergenceRounds = 8
-louvainRounds = 20
 
 #################################################
 ### Part2 Specific Arguments and descriptions ###

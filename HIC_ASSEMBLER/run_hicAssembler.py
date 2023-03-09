@@ -23,9 +23,13 @@ def readConfigFileToVariables(configFile):
 				"avgClusterPlot_outlined":'',
 				"binGroupFile":'',
 				"assessmentFile":'',
-				"minSize":20,
+				"hyperGeom":True,
+				"hmm":False,
+				"minSize":5,
 				"modularity":.05,
-				"convergenceRounds":8,
+				"psig":.05,
+				"convergenceRounds":5,
+				"lookAhead":.2,
 				"louvainRounds":20,
 				"chromosomeGroupFile":'',
 				"chromosomeOrderFile":'',
@@ -92,12 +96,30 @@ def readConfigFileToVariables(configFile):
 			varDict["binGroupFile"] = varDict["saveFilesDirectory"]+'/'+val
 		if arg == "assessmentFile" and val:
 			varDict["assessmentFile"] = varDict["saveFilesDirectory"]+'/'+val
+
+		### These two dictate which strategy is used to parse the avg clustering results ###
+		if arg == "hyperGeom" and val:
+			if (val == "True" or val == "true"):
+				varDict["hyperGeom"] = True
+		if arg == "hyperGeom" and val:
+			if (val == "False" or val == "false"):
+				varDict["hyperGeom"] = False
+
+		if arg == "hmm" and val:
+			if (val == "True" or val == "true"):
+				varDict["hmm"] = True
+		if arg == "hmm" and val:
+			if (val == "False" or val == "false"):
+				varDict["hmm"] = False
+
+		### Both HMM and Hyper geometric
 		if arg == "minSize" and val:
 			try:
 				val = int(val)
 				varDict["minSize"] = val
 			except:
-				print("WARNING... minSize must be an integer value... setting minSize=20 which is the default value")
+				print("WARNING... minSize must be an integer value... setting minSize=5 which is the default value")
+		
 		if arg == "modularity" and val:
 			try:
 				val = float(val)
@@ -107,18 +129,52 @@ def readConfigFileToVariables(configFile):
 				varDict["modularity"] = val
 			except:
 				print("WARNING... modularity must be a floating point value... setting modularity=.05 which is the default value")
-		if arg == "convergenceRounds" and val:
-			try:
-				val = int(val)
-				varDict["convergenceRounds"] = val
-			except:
-				print("WARNING... convergenceRounds must be an integer value... setting convergenceRounds=8 which is the default value")
+		
 		if arg == "louvainRounds" and val:
 			try:
 				val = int(val)
 				varDict["louvainRounds"] = val
 			except:
 				print("WARNING... louvainRounds must be an integer value... setting louvainRounds=20 which is the default value")
+		
+		### Hyper geometric specific
+		if arg == "psig" and val:
+			try:
+				val = float(val)
+				if val > 1.:
+					print("WARNING... psig must be a value between 0.0 and 1.0... setting psig=.05 which is the default value")
+				else:
+					varDict["psig"] = val
+			except:
+				print("WARNING... modularity must be a floating point value... setting psig=.05 which is the default value. If hyperGeom option is not set then disregard this warning")
+
+
+		### HMM specific
+		if arg == "convergenceRounds" and val:
+			try:
+				val = int(val)
+				varDict["convergenceRounds"] = val
+			except:
+				print("WARNING... convergenceRounds must be an integer value... setting convergenceRounds=5 which is the default value. If hmm option is not set then disregard this warning")
+		
+		if arg == "lookAhead" and val:
+			if type(val) == type(0.0):
+				val = float(val)
+				if val > 1.:
+					print('WARNING... lookAhead must be a value between 0.0 and 1.0 or "False" Warning that false can lead to large runtimes for bigger data compared to truncated version... setting lookAhead=.2 which is the default value. If hmm option is not set then disregard this warning')
+				else:
+					varDict["lookAhead"] = val
+					
+			
+			elif type(val) == type("False"):
+				if (val == "False") or (val == "false"):
+					varDict["lookAhead"] = False
+				else:
+					print('WARNING lookAhead option should be set to "False" or a float between 0.0 and 1.0... {} is not valid. Setting to default of .2 instead. If hmm option is not set then disregard this warning'.format(val))
+
+			else:
+				print('WARNING lookAhead option should be set to "False" or a float between 0.0 and 1.0... {} is not valid. Setting to default of .2 instead. If hmm option is not set then disregard this warning'.format(val))
+
 		####################################################
 		### Variables only used in part2 of the pipeline ###
 		if arg == "chromosomePlotSuffix" and val:
@@ -171,12 +227,21 @@ def ensureAllVariablesAreSet(varDict):
 		if val == '':
 			exitFail = 1
 			unsetVariables.append(key)
+
+	### Warning that hyper geom and hmm are both set. In this case, hyper geom will be used over hmm with default settings if not provided
+	if (varDict["hyperGeom"] == True) and (varDict["hmm"] == True):
+		exitFail = 2
+
 	#################
 	if exitFail == 1:
-		print("The following variable(s) do not have any value assossicated with them. Please set this variables to continue...")
+		print("The following variable(s) do not have any value assossicated with them. Please set this variables to continue.")
 		for v in unsetVariables:
 			print(v)
 		print("Exiting...")
+		return True
+	
+	elif exitFail == 2:
+		print('- WARNING - Both hyperGeom and hmm options are set to True... Set one option to "True" and the other to "False" or both to "False" in order to continue. Exiting...')
 		return True
 	else:
 		return False
@@ -212,7 +277,8 @@ if __name__ == "__main__":
 		part1.runPipeline(varDict["hicProBedFile"],varDict["hicProBiasFile"],varDict["hicProMatrixFile"],varDict["hicProScaffSizeFile"],
 						  varDict["dendrogramOrderFile"],varDict["avgClusterPlot"],varDict["avgClusterPlot_outlined"],
 						  varDict["binGroupFile"],varDict["assessmentFile"],varDict["chromosomeGroupFile"],
-						  varDict["minSize"],varDict["modularity"],varDict["convergenceRounds"],varDict["louvainRounds"],varDict["resolution"])
+						  varDict["hyperGeom"],varDict["hmm"],varDict["minSize"],varDict["modularity"],varDict["louvainRounds"],
+						  varDict["psig"],varDict["convergenceRounds"],varDict["lookAhead"],varDict["resolution"])
 	##############
 	if args.part2:
 		import orderGenome as part2

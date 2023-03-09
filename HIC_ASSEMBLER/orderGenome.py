@@ -135,7 +135,7 @@ def convertMatrix(adjacencyMatrix,binList,distance=True,similarity=False):
 	   Input = adjacencyMatrix and corresponding Bin object list (we use the preComputed rowSum attribute of the binObjects to speed up the process )
 	   Output = transformed adjacencyMatrix'''
 	startTime = time.time()
-	adjacencyMatrix = scipy.asmatrix(adjacencyMatrix)
+	adjacencyMatrix = numpy.asmatrix(adjacencyMatrix)
 	########################################
 	for i,row in enumerate(adjacencyMatrix):
 		if distance == True:
@@ -161,7 +161,7 @@ def logTransformMatrix(matrix,logBase=10,reverse=False):
 	'''Simple function to convert a matrix to and from a logTransform
 	   Input = matrix and logBase or reverse=True/False
 	   Output = transformed matrix'''
-	matrix = scipy.asmatrix(matrix)
+	matrix = numpy.asmatrix(matrix)
 	newMat = [ [ 0.0 for ii in range(0,len(matrix)) ] for i in range(0,len(matrix)) ]
 	if reverse == False:
 		for i,row in enumerate(matrix):
@@ -711,3 +711,4 @@ def runPipeline(hicProBedFile,hicProBiasFile,hicProMatrixFile,chromosomeGroupFil
 	writeBinIDsOrderingToFile([ sObj for sObjs in orderedChromosomes for sObj in sObjs ],plotOrderFile)
 	################################################################
 	print("Total run-time  for Part2 = "+str(time.time()-startTime))
+	print("- Part 2 (chromosome ordering) completed successfully")
