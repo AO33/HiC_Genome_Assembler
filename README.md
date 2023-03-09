@@ -17,6 +17,19 @@ https://www.baumannlab.org/links.html<br>
   ![high_levelOverview](https://user-images.githubusercontent.com/20343526/219607825-c99b6578-828b-4031-bc9a-7f730d115262.png)
 
 <br><br>
+## General usage and install instructions
+Code is entirely python based and can be run by downloading the HIC_ASSEMBLER directory and installing the relevant packages provided in the condaEnviornment_commands.rtf file. Additionally, it is recommended to create a new enviroment before running any installs to avoid complications.
+Provided is a working example config file (hicAssembler_config_workingExample.txt), which is intended to provide the user with a template, but should be altered to fit ones needs. Once the config file has been updated with the relevant settings / parameters, one can run the following command(s) to run the program<br>
+
+**To run the entire pipeline in one fell swoop, then run with the following command**
+- python HIC_ASSEMBLER/run_hicAssembler.py -part1 -part2 -part3 -part4 -c file/path/to/hicAssembler_config.txt
+
+**Note that -part3 is optional and depends on a validpair file produced by HiCpro as well as data data produced by a rescriction enzyme (if your data is of newer hic like data types then this might not be applicable). In this case, set the finalOrderingsFile option in the config file to be the same as the chromosomeOrderFile**
+- python HIC_ASSEMBLER/run_hicAssembler.py -part1 -part2 -part4 -c file/path/to/hicAssembler_config.txt
+
+**Note that any part can be run independently, as long as the output from the previous parts has been generated. For example, to just run part2 then run the following command**
+- python HIC_ASSEMBLER/run_hicAssembler.py -part2 -c file/path/to/hicAssembler_config.txt
+
 ## Part1
 
 - Clusters contact map rows together via average clustering, and identifies matrix cut indices via hyper geometric cutting algorithm or HMM. Smaller groups are optionally resolved by modularity maximazation. Initial grouping assessment is also performed
