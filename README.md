@@ -19,10 +19,9 @@ https://www.baumannlab.org/links.html<br>
 <br><br>
 ## Part1
 
-- Clusters contact map rows together via average clustering, and identifies matrix cut indices via HMM and modularity maximazation steps. Initial grouping assessment is also performed
-
-  ![part1](https://user-images.githubusercontent.com/20343526/219609929-912dc433-4435-4617-b26d-567c340c7ccf.png)
-
+- Clusters contact map rows together via average clustering, and identifies matrix cut indices via hyper geometric cutting algorithm or HMM. Smaller groups are optionally resolved by modularity maximazation. Initial grouping assessment is also performed
+  
+  ![Screen Shot 2023-03-08 at 10 54 09 PM](https://user-images.githubusercontent.com/20343526/223932832-32feff75-e52f-4961-92bf-8b096c9d4069.png)  
 
 
 ## Part2
