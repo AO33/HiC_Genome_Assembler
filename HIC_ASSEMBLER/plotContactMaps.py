@@ -13,8 +13,11 @@ import xarray
 ### Plot contact map (basically a glorified heatMap where we can outline chromosomes given a set of coordinates) ###
 ### Default coordinates are reported in terms of MegaBases (Mb) on the axis but this is simple enough to change ####
 def plotContactMap(adjMat,resolution=100000,tickCount=11,highlightChroms=False,wInches=32,hInches=32,lP=1,hP=98,reverseColorMap='_r',showPlot=False,savePlot=False,title=False,titleSuffix=False):
-	print("- Attempting to plot matrix of shape {}".format(adjMat.shape))
-	adjMat = numpy.asarray(adjMat)
+	if type(adjMat) != type(numpy.asarray([])):
+		print("- Converting input type {} --> {} for plotting functionality".format(type(adjMat), type(numpy.asarray([]))))
+		adjMat = numpy.asarray(adjMat)
+	
+	print("- Attempting to plot array / matrix of shape {}".format(adjMat.shape))
 	startTime = time.time()
 	matrixLength = len(adjMat)
 	fig,ax = plt.subplots()
