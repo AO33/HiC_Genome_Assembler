@@ -158,22 +158,20 @@ def readConfigFileToVariables(configFile):
 				print("WARNING... convergenceRounds must be an integer value... setting convergenceRounds=5 which is the default value. If hmm option is not set then disregard this warning")
 		
 		if arg == "lookAhead" and val:
-			if type(val) == type(0.0):
+			try:
 				val = float(val)
 				if val > 1.:
-					print('WARNING... lookAhead must be a value between 0.0 and 1.0 or "False" Warning that false can lead to large runtimes for bigger data compared to truncated version... setting lookAhead=.2 which is the default value. If hmm option is not set then disregard this warning')
-				else:
-					varDict["lookAhead"] = val
+					print('WARNING... lookAhead must be a value between 0.0 and 1.0 or "False" {} out of bounds. Warning that false can lead to large runtimes for bigger data compared to truncated version... setting lookAhead=.2 which is the default value. If hmm option is not set then disregard this warning'.format(val))
+					val = .2
+
+				varDict["lookAhead"] = val
 					
-			
-			elif type(val) == type("False"):
+			except:
 				if (val == "False") or (val == "false"):
 					varDict["lookAhead"] = False
 				else:
-					print('WARNING lookAhead option should be set to "False" or a float between 0.0 and 1.0... {} is not valid. Setting to default of .2 instead. If hmm option is not set then disregard this warning'.format(val))
-
-			else:
-				print('WARNING lookAhead option should be set to "False" or a float between 0.0 and 1.0... {} is not valid. Setting to default of .2 instead. If hmm option is not set then disregard this warning'.format(val))
+					print('WARNING... lookAhead option should be set to "False" or a float between 0.0 and 1.0... {} is not valid. Setting to default of .2 instead. If hmm option is not set then disregard this warning'.format(val))
+					varDict["lookAhead"] = .2
 
 		####################################################
 		### Variables only used in part2 of the pipeline ###

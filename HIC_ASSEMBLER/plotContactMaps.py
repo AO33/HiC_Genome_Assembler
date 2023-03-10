@@ -14,6 +14,7 @@ import xarray
 ### Default coordinates are reported in terms of MegaBases (Mb) on the axis but this is simple enough to change ####
 def plotContactMap(adjMat,resolution=100000,tickCount=11,highlightChroms=False,wInches=32,hInches=32,lP=1,hP=98,reverseColorMap='_r',showPlot=False,savePlot=False,title=False,titleSuffix=False):
 	print("- Attempting to plot matrix of shape {}".format(adjMat.shape))
+	adjMat = numpy.asarray(adjMat)
 	startTime = time.time()
 	matrixLength = len(adjMat)
 	fig,ax = plt.subplots()
