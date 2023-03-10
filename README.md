@@ -33,7 +33,7 @@ Provided is a working example config file (hicAssembler_config_workingExample.tx
 
 - Clusters contact map rows together via average clustering, and identifies matrix cut indices via hyper geometric cutting algorithm or HMM. Smaller groups are optionally resolved by modularity maximazation. Initial grouping assessment is also performed
   
-  ![Screen Shot 2023-03-08 at 10 54 09 PM](https://user-images.githubusercontent.com/20343526/223932832-32feff75-e52f-4961-92bf-8b096c9d4069.png)  
+  ![Screen Shot 2023-03-10 at 1 45 07 PM](https://user-images.githubusercontent.com/20343526/224424933-167ccb6d-a552-407f-8565-8aac53f63dad.png)
 
 
 ## Part2
