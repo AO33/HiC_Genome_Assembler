@@ -23,7 +23,7 @@ Provided is a working example config file (hicAssembler_config_workingExample.tx
 **To run the entire pipeline in one fell swoop, then run with the following command**
 - python HIC_ASSEMBLER/run_hicAssembler.py -part1 -part2 -part3 -part4 -c file/path/to/hicAssembler_config.txt
 
-**Note that -part3 is optional and depends on a validpair file produced by HiCpro as well as data data produced by a rescriction enzyme (if your data is of newer hic like data types then this might not be applicable). In this case, set the finalOrderingsFile option in the config file to be the same as the chromosomeOrderFile**
+**Note that -part3 is optional and depends on a validpair file produced by HiCpro as well as data produced by a rescriction enzyme (if your data is of newer hic like data types then this might not be applicable). In this case, set the finalOrderingsFile option in the config file to be the same as the chromosomeOrderFile**
 - python HIC_ASSEMBLER/run_hicAssembler.py -part1 -part2 -part4 -c file/path/to/hicAssembler_config.txt
 
 **Note that any part can be run independently, as long as the output from the previous parts has been generated. For example, to just run part2 then run the following command**
