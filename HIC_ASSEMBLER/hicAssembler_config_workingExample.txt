@@ -12,7 +12,8 @@
 ### 8) An argument is specified with the following notation (do NOT deviate from this)... Example. ArgumentToBeSpecified = valueOfArgument
 ###    The argument is followed by a space then an equals sign then another space then the value of the argument
 ### 9) Finally, for any argument that specifies a plot/graph to be saved, an extension of the file type is required
-###    .png is HIGHLY reccommended as a .pdf will drastically slow down the run time and be unopenable to any computer without a high amount of ram
+###    .png is HIGHLY recommended as a .pdf will drastically increase the run time especially for data with more than ~10000 rows
+       A single full genome plot could take more than 1hour to plot using .pdf as an extension instead of png
 
 #########################################################
 ### Agruments used in 2 or more parts of the pipeline ###
