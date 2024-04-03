@@ -446,6 +446,12 @@ def bruteForceBestScore(sObjList,scaffDict,matrix,orderDict):
 	############################################################
 	count,bestCost,bestOrder,bestOrientation = 0, 0., "NA", "NA"
 	total = sum([ numpy.trace(matrix,offset=i) for i in range(1,len(matrix)) ]) ### Calculate the total weight of the upper triangle of the adjacencyMatrix
+	if total == 0:
+		print("WARNING/ERROR - Zero contact values found between scaffolds assigned to chromosome group {}".format(','.join([str(eee) for eee in elementsToPermute])))
+		print("This chromosome will be returned with an arbitrairy order and orientation. This error is likely caused by too small of scaffolds being included in the assembly process whereby they do not share any contact values")
+		print("It is recommended that these small scaffolds be removed from the validpairs file produced by HiCpro prior to ICE normalization to generate a cleaner contact map")
+		return differentOrderings[0], orientations[0], 0.0
+
 	print("Initial permutations to test "+str(len(differentOrderings)*len(orientations))+"...")
 	startTime = time.time()
 	for dOrder in differentOrderings:
@@ -567,14 +573,6 @@ def orderChromosome(chromGroup,matrix,binList,nScaffolds=6,scanScaffolds=5):
 	orderedScaffolds,scaffoldList = pullScaffolds([],scaffoldList,nScaffolds) ### Pull n largest scaffolds into new list to be ordered/oriented
 	adjMat,orderDict = giveNewAdjMat(matrix,orderedScaffolds,binList) ### Generate adjacency matrix containing scaffolds that need to be ordered
 	bfBestOrder,bfBestOrientation,bfBestScore = bruteForceBestScore(orderedScaffolds,scaffoldDict,adjMat,orderDict) ### Test all permutations of scaffold orders/orientations
-	### Special ammendment for chr1 of gularis ###
-
-	chr1Dict = { s:'' for s in bfBestOrder }
-	if "ScHqM4t_47_G" in chr1Dict:
-		bfBestOrder = ['ScHqM4t_47_G','ScHqM4t_65_G', 'ScHqM4t_29_G', 'ScHqM4t_29.1_G', 'ScHqM4t_25.1_G', 'ScHqM4t_28_G']
-		bfBestOrientation = ['-','+', '-', '-', '-', '-']
-		#################################################
-
 	orderedScaffolds,orderedNodes = reorderScaffList(bfBestOrder,bfBestOrientation,scaffoldDict) ### Reorder/orient scaffold list according to best score from the bruteforce method
 	orderedScaffolds,bestCost = orderRemainderScaffolds(orderedScaffolds,scaffoldList,orderDict,matrix,binList) ### Pull remaining unordered scaffolds into matrix and find their best placement one at a time until all are used
 	print("BestCost at the end of first two steps "+str(bestCost))
