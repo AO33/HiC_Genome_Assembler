@@ -18,7 +18,9 @@ https://www.baumannlab.org/links.html<br>
 <br><br>
 ## General usage and install instructions
 Code is entirely python based and can be run by downloading the HIC_ASSEMBLER directory and installing the relevant packages provided in the **packageInstallCommands.txt** file. Additionally, it is recommended to create a new enviroment before running any installs to avoid complications.
-Provided is a working example config file (hicAssembler_config_workingExample.txt), which is intended to provide the user with a template, but should be altered to fit ones needs. Once the config file has been updated with the relevant settings / parameters, one can run the following command(s) to run the program<br>
+Provided is a working example config file (hicAssembler_config_workingExample.txt), which is intended to provide the user with a template, but should be altered to fit ones needs. Once the config file has been updated with the relevant settings / parameters, one can run the following command(s) to run the program<br><br>
+
+Imporant note - Scaffolds that are smaller than the resulotion size can contribute a lot of noise to the contact map. Therefore, we found for our genomes (~1.6Gb in size) that using a resolution size of 100-500Kb and removing scaffolds < 10Kb in size prior to ICE normaliztion gives the best results. In essence, removal of smaller scaffolds prior to the ICE normalization step can remove a significant amount of noise from the contact map, which should improve assembly results. <br><br>
 
 **To run the entire pipeline in one fell swoop, then run with the following command**
 - python HIC_ASSEMBLER/run_hicAssembler.py -part1 -part2 -part3 -part4 -c file/path/to/hicAssembler_config.txt
